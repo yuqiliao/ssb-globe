@@ -7,6 +7,7 @@
   const suffixFormat = (d) => format(".2~s")(d).replace(/G/, "B");
 </script>
 
+<!-- if the mouse hovers over the map for which there is existing SSB taxes, the ssbtax data json for that country is returned -->
 {#if data?.jurisdiction}
   <div>
     <h2>{data.jurisdiction}</h2>
@@ -14,6 +15,7 @@
   </div>
 {/if}
 
+<!-- if the mouse hovers over the map which has no existing SSB taxes, the natural earth json is returned for that country -->
 {#if data?.properties}
   <div>
     <h2>{data.properties.BRK_NAME}</h2>
