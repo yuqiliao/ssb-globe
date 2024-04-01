@@ -3,9 +3,21 @@
 
   import * as topojson from "topojson-client";
   import { json, csv, autoType, flatGroup } from "d3";
+  import { tooltipData } from "../stores/ui.js";
+
+  export let selectedJurisdiction;
+  let activeId;
+
+  const handleClick = (place) => {
+    selectedJurisdiction = {
+      value: place.jurisdiction,
+      label: place.jurisdiction,
+      ...place,
+    };
+  };
 
   let countries = topojson.feature(world, world.objects.countries).features;
-  // console.log(countries);
+  $: console.log($tooltipData);
 
   const geojsonPath = "src/data/natural_earth.json";
   const boundaries = "src/data/InternationalBoundariesDisputedBoundaries.json";
@@ -31,6 +43,7 @@
 
   let databasePath = "src/data/database.csv";
 
+  //note that here taxData is asynchronously loaded and initialized with data fetched from a CSV file, exporting it directly won't be possible because the data might not be available immediately when other components try to import it.
   let taxData = [];
   csv(databasePath, autoType).then((data) => {
     taxData = data.map((d) => ({
@@ -133,7 +146,7 @@
   const degreesPerFrame = 0.5;
 
   const t = timer(() => {
-    if (dragging || tooltipData) return;
+    if (dragging || $tooltipData) return;
     $xRotation += degreesPerFrame;
     // console.log($xRotation);
   }, 0);
@@ -161,21 +174,20 @@
     );
   });
 
-  import Tooltip from "./Tooltip.svelte";
   import Legend from "./Legend.svelte";
 
-  let tooltipData;
+  // export let tooltipData;
   let tooltipPath;
 
-  $: console.log(tooltipData);
+  // $: console.log($tooltipData);
   // Whenever tooltipData changes, calculate the center of the country and rotate to it
-  $: if (tooltipData) {
+  $: if ($tooltipData) {
     tooltipPath =
       worldAreas.find(
         (country) =>
-          country.properties.WB_A3 === tooltipData.country_code ||
-          country.properties.ADM0_A3 === tooltipData.country_code
-      ) || tooltipData;
+          country.properties.WB_A3 === $tooltipData.country_code ||
+          country.properties.ADM0_A3 === $tooltipData.country_code
+      ) || $tooltipData;
     const center = geoCentroid(tooltipPath);
     $xRotation = -center[0];
     $yRotation = -center[1];
@@ -198,6 +210,39 @@
     // Determine fill color based on gdistance
     return gdistance > 1.5 ? color1 : color2;
   };
+
+  export let filters = [];
+  let filteredData = [];
+
+  const updateFilteredData = () => {
+    if (filters && filters.length > 0) {
+      const filtersGrouped = flatGroup(filters, (d) => d.group).map(
+        ([group, items]) => ({
+          group,
+          items,
+        })
+      );
+
+      const filteredGroupedData = filtersGrouped.map((group) =>
+        Array.from(
+          new Set(
+            merge(
+              group.items.map((filter) =>
+                data.filter((d) => d[filter.group] == filter.value)
+              )
+            )
+          )
+        )
+      );
+      filteredData =
+        filteredGroupedData.length > 0
+          ? filteredGroupedData.reduce((a, b) => a.filter((c) => b.includes(c)))
+          : [];
+    } else {
+      filteredData = [];
+    }
+  };
+  $: filters, updateFilteredData();
 </script>
 
 <div class="chart-container" bind:clientWidth={width}>
@@ -216,7 +261,7 @@
       cy={height / 2}
       fill="#1c1c1c"
       filter="url('#glow')"
-      on:click={() => (tooltipData = null)}
+      on:click={() => tooltipData.set(null)}
     />
 
     <!-- Countries -->
@@ -227,14 +272,18 @@
         fill={colorScale(country.properties.POP_EST || 0)}
         stroke="none"
         on:click={() => {
-          tooltipData =
+          const selectedCountry =
             taxedPoly.find((d) => d.country_code == country.properties.WB_A3) ||
             country;
+          tooltipData.set(selectedCountry);
+          handleClick(selectedCountry);
         }}
         on:focus={() => {
-          tooltipData =
+          const selectedCountry =
             taxedPoly.find((d) => d.country_code == country.properties.WB_A3) ||
             country;
+          tooltipData.set(selectedCountry);
+          handleClick(selectedCountry);
         }}
       />
     {/each}
@@ -305,10 +354,12 @@
               "red"
             )}
             on:click={() => {
-              tooltipData = place;
+              tooltipData.set(place);
+              handleClick(place);
             }}
             on:focus={() => {
-              tooltipData = place;
+              tooltipData.set(place);
+              handleClick(place);
             }}
           />
         {/if}
@@ -342,10 +393,12 @@
               )}
               stroke-width="0.4"
               on:click={() => {
-                tooltipData = place;
+                tooltipData.set(place);
+                handleClick(place);
               }}
               on:focus={() => {
-                tooltipData = place;
+                tooltipData.set(place);
+                handleClick(place);
               }}
             />
           {:else}
@@ -372,10 +425,12 @@
               )}
               stroke-width="0.4"
               on:click={() => {
-                tooltipData = place;
+                tooltipData.set(place);
+                handleClick(place);
               }}
               on:focus={() => {
-                tooltipData = place;
+                tooltipData.set(place);
+                handleClick(place);
               }}
             />
           {/if}
@@ -384,15 +439,15 @@
     </g>
 
     <!-- Highlight the country -->
-    {#if tooltipData}
-      {#key () => tooltipData.unique_id || tooltipData.properties.WB_A3}
+    {#if $tooltipData}
+      {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3}
         <path
           d={path(
             (tooltipPath =
               worldAreas.find(
                 (country) =>
-                  country.properties.WB_A3 == tooltipData.country_code
-              ) || tooltipData)
+                  country.properties.WB_A3 == $tooltipData.country_code
+              ) || $tooltipData)
           )}
           fill="transparent"
           stroke="white"
@@ -404,9 +459,7 @@
     {/if}
   </svg>
 
-  <Legend {colorScale} data={tooltipData} />
-
-  <Tooltip data={tooltipData} />
+  <Legend {colorScale} data={$tooltipData} />
 </div>
 
 <style>
@@ -415,7 +468,7 @@
     margin: 0 auto;
   }
 
-  :global(body) {
+  body {
     background: rgb(40, 40, 40);
   }
 
