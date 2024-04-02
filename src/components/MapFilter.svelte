@@ -3,16 +3,6 @@
   import { ascending } from "d3";
   export let data;
   export let filters;
-
-  const jurisdictions = data
-    .map((d) => ({
-      ...d,
-      value: d.jurisdiction,
-      label: d.jurisdiction,
-    }))
-    .sort((a, b) => ascending(a.value, b.value));
-
-  console.log(jurisdictions);
 </script>
 
 <!-- <strong class="font-robotoCondensed">to zoom in</strong> -->
@@ -22,7 +12,7 @@
     <Select
       class=""
       placeholder="Select Jurisdiction"
-      items={jurisdictions}
+      items={data}
       bind:value={filters}
     />
   </span>

@@ -4,21 +4,18 @@
   import MapFilter from "./components/MapFilter.svelte";
   import MapDetails from "./components/MapDetails.svelte";
   import { tooltipData } from "./stores/ui.js";
-  import { csv, autoType } from "d3";
+  import { csv, autoType, ascending } from "d3";
 
   let databasePath = "src/data/database.csv";
   let taxData = [];
   csv(databasePath, autoType).then((data) => {
-    taxData = data.map((d) => ({
-      ...d,
-      taxedType:
-        d.instrument == "Excise"
-          ? d.targeted == 1
-            ? "exciseTargeted"
-            : "exciseUntargeted"
-          : d.instrument,
-      level_2: d.level == "National" ? "National" : "Subnational",
-    }));
+    taxData = data
+      .map((d) => ({
+        ...d,
+        value: d.jurisdiction,
+        label: d.jurisdiction,
+      }))
+      .sort((a, b) => ascending(a.value, b.value));
     console.log(taxData);
   });
 
@@ -45,10 +42,7 @@
     <div class="border border-gray-300 rounded-md p-4 h-96">
       <h2 class="text-lg font-semibold mb-4">Jurisdiction Information</h2>
 
-      <MapFilter
-        data={taxData.filter((d) => d.country_code)}
-        bind:filters={selectedJurisdiction}
-      />
+      <MapFilter data={taxData} bind:filters={selectedJurisdiction} />
       <div>
         <MapDetails item={selectedJurisdiction} />
       </div>
