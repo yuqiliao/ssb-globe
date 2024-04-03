@@ -32,7 +32,7 @@
     <!-- Place your rotating globe component here -->
     <div class="border border-gray-300 rounded-md h-96">
       Rotating Globe Component
-      <Globe bind:selectedJurisdiction />
+      <Globe />
     </div>
   </div>
 
@@ -42,9 +42,9 @@
     <div class="border border-gray-300 rounded-md p-4 h-96">
       <h2 class="text-lg font-semibold mb-4">Jurisdiction Information</h2>
 
-      <MapFilter data={taxData} bind:filters={selectedJurisdiction} />
+      <MapFilter data={taxData} bind:filters={$tooltipData} />
       <div>
-        <MapDetails item={selectedJurisdiction} />
+        <MapDetails item={$tooltipData} />
       </div>
     </div>
   </div>

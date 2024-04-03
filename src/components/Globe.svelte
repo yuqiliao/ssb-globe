@@ -5,11 +5,11 @@
   import { json, csv, autoType, flatGroup } from "d3";
   import { tooltipData } from "../stores/ui.js";
 
-  export let selectedJurisdiction;
+  // export let selectedJurisdiction;
   let activeId;
 
   const handleClick = (place) => {
-    selectedJurisdiction = {
+    $tooltipData = {
       value: place.jurisdiction,
       label: place.jurisdiction,
       ...place,
@@ -17,7 +17,7 @@
   };
 
   let countries = topojson.feature(world, world.objects.countries).features;
-  $: console.log($tooltipData);
+  $: console.log("tooltipData", $tooltipData);
 
   const geojsonPath = "src/data/natural_earth.json";
   const boundaries = "src/data/InternationalBoundariesDisputedBoundaries.json";
@@ -267,25 +267,31 @@
     <!-- Countries -->
     {#each worldAreas as country}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <path
-        d={path(country)}
-        fill={colorScale(country.properties.POP_EST || 0)}
-        stroke="none"
-        on:click={() => {
-          const selectedCountry =
-            taxedPoly.find((d) => d.country_code == country.properties.WB_A3) ||
-            country;
-          tooltipData.set(selectedCountry);
-          handleClick(selectedCountry);
-        }}
-        on:focus={() => {
-          const selectedCountry =
-            taxedPoly.find((d) => d.country_code == country.properties.WB_A3) ||
-            country;
-          tooltipData.set(selectedCountry);
-          handleClick(selectedCountry);
-        }}
-      />
+      <path fill="#D2D2D2" stroke="none" d={path(country)} />
+      {#if taxedPoly.find((d) => d.country_code == country.properties.ADM0_A3)}
+        <path
+          d={path(country)}
+          fill={colorScale(country.properties.POP_EST || 0)}
+          stroke="none"
+          on:click={() => {
+            const selectedCountry =
+              taxedPoly.find(
+                (d) => d.country_code == country.properties.WB_A3
+              ) || country;
+            console.log("selectedCountry:", selectedCountry);
+            tooltipData.set(selectedCountry);
+            handleClick(selectedCountry);
+          }}
+          on:focus={() => {
+            const selectedCountry =
+              taxedPoly.find(
+                (d) => d.country_code == country.properties.WB_A3
+              ) || country;
+            tooltipData.set(selectedCountry);
+            handleClick(selectedCountry);
+          }}
+        />
+      {/if}
     {/each}
 
     <!-- Borders -->

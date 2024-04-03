@@ -3,6 +3,8 @@
   import { ascending } from "d3";
   export let data;
   export let filters;
+
+  $: console.log(filters);
 </script>
 
 <!-- <strong class="font-robotoCondensed">to zoom in</strong> -->
