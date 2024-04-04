@@ -2,8 +2,10 @@
   import world from "$data/world-110m.json";
 
   import * as topojson from "topojson-client";
-  import { json, csv, autoType, flatGroup } from "d3";
+  import { json, csv, autoType, flatGroup, scaleOrdinal } from "d3";
   import { tooltipData } from "../stores/ui.js";
+  export let instrumentGroups;
+  export let instrumentColors;
 
   // export let selectedJurisdiction;
   let activeId;
@@ -106,19 +108,26 @@
 
   // $: console.log(path(borders));
 
-  //this is not used and could be commented out/deleted
-  import data from "$data/data.json";
-
   let radius = 3;
 
   // Color scale
   import { max } from "d3-array";
   import { scaleLinear } from "d3-scale";
 
+  let colorLevel6 = [
+    "#0b73ae",
+    "#87cadd",
+    "#7fc07e",
+    "#fbb158",
+    "#c87db6",
+    "#D2D2D2",
+  ];
+  let colorLevel2 = ["#0b73ae", "#87cadd", "#D2D2D2"];
+
   // Not currently used
-  const colorScale = scaleLinear()
-    .domain([0, max(data, (d) => d.population)])
-    .range(["#26362e", "#0DCC6C"]);
+  const colorScaleInstrument = scaleOrdinal()
+    .domain(instrumentGroups.map((d) => d.value))
+    .range(instrumentColors);
 
   // // old code to restructure countries so that it will include population info
   // countries.forEach((country) => {
@@ -259,7 +268,7 @@
       r={width / 2}
       cx={width / 2}
       cy={height / 2}
-      fill="#1c1c1c"
+      fill="#f8f8f8"
       filter="url('#glow')"
       on:click={() => tooltipData.set(null)}
     />
@@ -271,7 +280,13 @@
       {#if taxedPoly.find((d) => d.country_code == country.properties.ADM0_A3)}
         <path
           d={path(country)}
-          fill={colorScale(country.properties.POP_EST || 0)}
+          fill={colorScaleInstrument(() => {
+            const selectedCountry =
+              taxedPoly.find(
+                (d) => d.country_code == country.properties.WB_A3
+              ) || country;
+            selectedCountry.instrument;
+          })}
           stroke="none"
           on:click={() => {
             const selectedCountry =
@@ -465,7 +480,7 @@
     {/if}
   </svg>
 
-  <Legend {colorScale} data={$tooltipData} />
+  <!-- <Legend {colorScale} data={$tooltipData} /> -->
 </div>
 
 <style>

@@ -3,8 +3,17 @@
   //   import Tooltip from "./components/Tooltip.svelte";
   import MapFilter from "./components/MapFilter.svelte";
   import MapDetails from "./components/MapDetails.svelte";
+  import MapLegend from "./components/MapLegend.svelte";
   import { tooltipData } from "./stores/ui.js";
   import { csv, autoType, ascending } from "d3";
+  import {
+    instrumentColors,
+    instrumentGroups,
+    regionColors,
+    regionGroups,
+    incomeColors,
+    incomeGroups,
+  } from "$data/config.js";
 
   let databasePath = "src/data/database.csv";
   let taxData = [];
@@ -32,7 +41,8 @@
     <!-- Place your rotating globe component here -->
     <div class="border border-gray-300 rounded-md h-96">
       Rotating Globe Component
-      <Globe />
+      <Globe {instrumentGroups} {instrumentColors} />
+      <MapLegend {instrumentGroups} {instrumentColors} />
     </div>
   </div>
 
