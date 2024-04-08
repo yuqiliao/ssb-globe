@@ -4,8 +4,13 @@
   import MapFilter from "./components/MapFilter.svelte";
   import MapDetails from "./components/MapDetails.svelte";
   import MapLegend from "./components/MapLegend.svelte";
-  import { tooltipData } from "./stores/ui.js";
+  import { tooltipData, selectedColoringScheme } from "./stores/ui.js";
   import { csv, autoType, ascending } from "d3";
+
+  // Subscribe to changes in selectedColoringSchemeStore and update selectedColoringScheme accordingly
+
+  $: console.log($selectedColoringScheme);
+
   import {
     instrumentColors,
     instrumentGroups,
@@ -41,8 +46,8 @@
     <!-- Place your rotating globe component here -->
     <div class="border border-gray-300 rounded-md h-96">
       Rotating Globe Component
-      <Globe {instrumentGroups} {instrumentColors} />
-      <MapLegend {instrumentGroups} {instrumentColors} />
+      <Globe selectedColoringScheme={$selectedColoringScheme} />
+      <MapLegend selectedColoringScheme={$selectedColoringScheme} />
     </div>
   </div>
 

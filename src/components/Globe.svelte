@@ -3,9 +3,17 @@
 
   import * as topojson from "topojson-client";
   import { json, csv, autoType, flatGroup, scaleOrdinal } from "d3";
-  import { tooltipData } from "../stores/ui.js";
-  export let instrumentGroups;
-  export let instrumentColors;
+  import { tooltipData, selectedColoringScheme } from "../stores/ui.js";
+
+  $: console.log($selectedColoringScheme);
+  import {
+    instrumentColors,
+    instrumentGroups,
+    regionColors,
+    regionGroups,
+    incomeColors,
+    incomeGroups,
+  } from "$data/config.js";
 
   // export let selectedJurisdiction;
   let activeId;
@@ -113,6 +121,42 @@
   // Color scale
   import { max } from "d3-array";
   import { scaleLinear } from "d3-scale";
+
+  // Function to color jurisdicitons
+  // Define color scales based on different coloring schemes
+  const instrumentColorScale = scaleOrdinal()
+    .domain(instrumentGroups.map((d) => d.value))
+    .range(instrumentColors);
+
+  const regionColorScale = scaleOrdinal()
+    .domain(regionGroups.map((d) => d.value))
+    .range(regionColors);
+
+  const incomeColorScale = scaleOrdinal()
+    .domain(incomeGroups.map((d) => d.value))
+    .range(incomeColors);
+
+  // Function to determine which color scale and selected country property to use
+  const getColorScaleAndProperty = (
+    selectedColoringScheme,
+    selectedCountry
+  ) => {
+    let colorScale, selectedProperty;
+
+    // Choose color scale and selected property based on selectedColoringScheme
+    if (selectedColoringScheme === "instrument") {
+      colorScale = instrumentColorScale;
+      selectedProperty = selectedCountry.instrument;
+    } else if (selectedColoringScheme === "region") {
+      colorScale = regionColorScale;
+      selectedProperty = selectedCountry.region;
+    } else if (selectedColoringScheme === "income") {
+      colorScale = incomeColorScale;
+      selectedProperty = selectedCountry.income_group;
+    } // Add more conditions for other coloring schemes if needed
+
+    return { colorScale, selectedProperty };
+  };
 
   let colorLevel6 = [
     "#0b73ae",
@@ -280,13 +324,20 @@
       {#if taxedPoly.find((d) => d.country_code == country.properties.ADM0_A3)}
         <path
           d={path(country)}
-          fill={colorScaleInstrument(() => {
+          fill={(() => {
             const selectedCountry =
               taxedPoly.find(
                 (d) => d.country_code == country.properties.WB_A3
               ) || country;
-            selectedCountry.instrument;
-          })}
+
+            // Get color scale and selected property based on selectedColoringScheme
+            const { colorScale, selectedProperty } = getColorScaleAndProperty(
+              $selectedColoringScheme,
+              selectedCountry
+            );
+
+            return colorScale(selectedProperty);
+          })()}
           stroke="none"
           on:click={() => {
             const selectedCountry =

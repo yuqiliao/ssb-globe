@@ -103,8 +103,8 @@ export const regionGroups = [
 
 export const incomeColors = ["#1B4FA9", "#3674DE", "#B6D2FF", "#DAE8FF"];
 export const incomeGroups = [
-  "High income",
-  "Upper middle income",
-  "Lower middle income",
-  "Low income",
+  { label: "High income", value: "HIC" },
+  { label: "Upper middle income", value: "UMIC" },
+  { label: "Lower middle income", value: "LMIC" },
+  { label: "Low income", value: "LIC" },
 ];
