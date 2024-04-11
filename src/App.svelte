@@ -11,15 +11,6 @@
 
   $: console.log($selectedColoringScheme);
 
-  import {
-    instrumentColors,
-    instrumentGroups,
-    regionColors,
-    regionGroups,
-    incomeColors,
-    incomeGroups,
-  } from "$data/config.js";
-
   let databasePath = "src/data/database.csv";
   let taxData = [];
   csv(databasePath, autoType).then((data) => {
@@ -46,8 +37,8 @@
     <!-- Place your rotating globe component here -->
     <div class="border border-gray-300 rounded-md h-96">
       Rotating Globe Component
-      <Globe selectedColoringScheme={$selectedColoringScheme} />
-      <MapLegend selectedColoringScheme={$selectedColoringScheme} />
+      <Globe />
+      <MapLegend />
     </div>
   </div>
 

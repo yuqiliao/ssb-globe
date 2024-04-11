@@ -158,21 +158,6 @@
     return { colorScale, selectedProperty };
   };
 
-  let colorLevel6 = [
-    "#0b73ae",
-    "#87cadd",
-    "#7fc07e",
-    "#fbb158",
-    "#c87db6",
-    "#D2D2D2",
-  ];
-  let colorLevel2 = ["#0b73ae", "#87cadd", "#D2D2D2"];
-
-  // Not currently used
-  const colorScaleInstrument = scaleOrdinal()
-    .domain(instrumentGroups.map((d) => d.value))
-    .range(instrumentColors);
-
   // // old code to restructure countries so that it will include population info
   // countries.forEach((country) => {
   //   const metadata = data?.find((d) => d.id === country.id);
@@ -320,7 +305,9 @@
     <!-- Countries -->
     {#each worldAreas as country}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- base gray map for all jurisdictions  -->
       <path fill="#D2D2D2" stroke="none" d={path(country)} />
+      <!-- color the jurisdictions with ssb taxes -->
       {#if taxedPoly.find((d) => d.country_code == country.properties.ADM0_A3)}
         <path
           d={path(country)}
@@ -381,24 +368,26 @@
       />
     {/each}
 
-    <!-- special color for world bank disputed area - optional for now, as I plan to make only two colors, those with SSB tax and those without. the disputed area could have a in-between color, or could just have a non-ssb tax color
+    <!-- special color for world bank disputed area -->
     {#each wbDisputedArea as area}
+      <!-- for non-China-India disputed areas, make the color gray -->
       {#if area.id > 2}
         <path
           class="disp-area {area.properties.FID}"
           fill="#D2D2D2"
           d={path(area)}
         />
+        <!-- for China-India disputed areas (need to do a in-between color); ideally, need to do a in-between color. but I decided to keep it simple as gray for now, as it's not the focus of the globe and I don't want these areas to stand out with different colors -->
       {:else}
         <path
           class="disp-area {area.properties.FID}"
-          fill="#CEACC9"
+          fill="#D2D2D2"
           d={path(area)}
         />
       {/if}
-    {/each} -->
+    {/each}
 
-    <!-- plot rotating center -->
+    <!-- plot rotating center , for dev/testing-->
     <g>
       <circle
         class="cursor-pointer"
@@ -412,6 +401,7 @@
     <!-- small countries and non-country jurisdictions -->
     <g>
       {#each taxedCircle as place}
+        {console.log(place)}
         {#if place.lat && place.lon}
           <circle
             class="cursor-pointer {place.country_code}"
@@ -423,7 +413,13 @@
               place.lat,
               rotatingGlobeCenter,
               "none",
-              "red"
+              (() => {
+                // Get color scale and selected property based on selectedColoringScheme
+                const { colorScale, selectedProperty } =
+                  getColorScaleAndProperty($selectedColoringScheme, place);
+
+                return colorScale(selectedProperty);
+              })()
             )}
             on:click={() => {
               tooltipData.set(place);
@@ -454,7 +450,13 @@
                 place.lat,
                 rotatingGlobeCenter,
                 "none",
-                "red"
+                (() => {
+                  // Get color scale and selected property based on selectedColoringScheme
+                  const { colorScale, selectedProperty } =
+                    getColorScaleAndProperty($selectedColoringScheme, place);
+
+                  return colorScale(selectedProperty);
+                })()
               )}
               stroke={colorConditionally(
                 place.lon,
@@ -486,7 +488,13 @@
                 place.lat,
                 rotatingGlobeCenter,
                 "none",
-                "red"
+                (() => {
+                  // Get color scale and selected property based on selectedColoringScheme
+                  const { colorScale, selectedProperty } =
+                    getColorScaleAndProperty($selectedColoringScheme, place);
+
+                  return colorScale(selectedProperty);
+                })()
               )}
               stroke={colorConditionally(
                 place.lon,
