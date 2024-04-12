@@ -54,57 +54,62 @@ export const regionColors = [
   "#98BB66",
   "#31C4F3",
   "#FBBD55",
+  "#D2D2D2",
 ];
 
 export const regionGroups = [
   {
     label: "East Asia & Pacific",
     value: "EAP",
-    focus: [120, 20],
-    scale: 1.4,
   },
   {
     label: "Europe & Central Asia",
     value: "ECA",
-    focus: [0, 50],
-    scale: 3,
   },
   {
     label: "Latin America & Caribbean",
     value: "LAC",
-    focus: [-65, -20],
-    scale: 1.5,
   },
   {
     label: "Middle East & North Africa",
     value: "MENA",
-    focus: [40, 30],
-    scale: 3,
   },
   {
     label: "North America",
     value: "NAR",
-    focus: [-80, 50],
-    scale: 3,
   },
   {
     label: "South Asia",
     value: "SAR",
-    focus: [70, 20],
-    scale: 3.5,
   },
   {
     label: "Africa",
     value: "AFR",
-    focus: [15, -5],
-    scale: 2.5,
+  },
+  {
+    label: "No tax/data/selection",
+    description:
+      "No tax verified, no data, or jurisdiction not included in current selection.",
+    value: "none",
   },
 ];
 
-export const incomeColors = ["#1B4FA9", "#3674DE", "#B6D2FF", "#DAE8FF"];
+export const incomeColors = [
+  "#1B4FA9",
+  "#3674DE",
+  "#B6D2FF",
+  "#DAE8FF",
+  "#D2D2D2",
+];
 export const incomeGroups = [
   { label: "High income", value: "HIC" },
   { label: "Upper middle income", value: "UMIC" },
   { label: "Lower middle income", value: "LMIC" },
   { label: "Low income", value: "LIC" },
+  {
+    label: "No tax/data/selection",
+    description:
+      "No tax verified, no data, or jurisdiction not included in current selection.",
+    value: "N/C",
+  },
 ];

@@ -146,7 +146,7 @@
     // Choose color scale and selected property based on selectedColoringScheme
     if (selectedColoringScheme === "instrument") {
       colorScale = instrumentColorScale;
-      selectedProperty = selectedCountry.instrument;
+      selectedProperty = selectedCountry.taxedType;
     } else if (selectedColoringScheme === "region") {
       colorScale = regionColorScale;
       selectedProperty = selectedCountry.region;
@@ -308,7 +308,7 @@
       <!-- base gray map for all jurisdictions  -->
       <path fill="#D2D2D2" stroke="none" d={path(country)} />
       <!-- color the jurisdictions with ssb taxes -->
-      {#if taxedPoly.find((d) => d.country_code == country.properties.ADM0_A3)}
+      {#if taxedPoly.find((d) => d.country_code == country.properties.WB_A3)}
         <path
           d={path(country)}
           fill={(() => {
@@ -401,7 +401,6 @@
     <!-- small countries and non-country jurisdictions -->
     <g>
       {#each taxedCircle as place}
-        {console.log(place)}
         {#if place.lat && place.lon}
           <circle
             class="cursor-pointer {place.country_code}"
@@ -520,7 +519,7 @@
 
     <!-- Highlight the country -->
     {#if $tooltipData}
-      {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3}
+      {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
         <path
           d={path(
             (tooltipPath =
