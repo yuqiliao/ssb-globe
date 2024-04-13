@@ -13,6 +13,8 @@
     regionGroups,
     incomeColors,
     incomeGroups,
+    levelColors,
+    levelGroups,
   } from "$data/config.js";
 
   // export let selectedJurisdiction;
@@ -54,6 +56,7 @@
   let databasePath = "src/data/database.csv";
 
   //note that here taxData is asynchronously loaded and initialized with data fetched from a CSV file, exporting it directly won't be possible because the data might not be available immediately when other components try to import it.
+  // YL: added `|| d.level == "National "` because Russia's level column has an extra space
   let taxData = [];
   csv(databasePath, autoType).then((data) => {
     taxData = data.map((d) => ({
@@ -64,7 +67,10 @@
             ? "exciseTargeted"
             : "exciseUntargeted"
           : d.instrument,
-      level_2: d.level == "National" ? "National" : "Subnational",
+      level_2:
+        d.level == "National" || d.level == "National "
+          ? "National"
+          : "Subnational",
     }));
     console.log(taxData);
   });
@@ -136,6 +142,10 @@
     .domain(incomeGroups.map((d) => d.value))
     .range(incomeColors);
 
+  const levelColorScale = scaleOrdinal()
+    .domain(levelGroups.map((d) => d.value))
+    .range(levelColors);
+
   // Function to determine which color scale and selected country property to use
   const getColorScaleAndProperty = (
     selectedColoringScheme,
@@ -153,6 +163,9 @@
     } else if (selectedColoringScheme === "income") {
       colorScale = incomeColorScale;
       selectedProperty = selectedCountry.income_group;
+    } else if (selectedColoringScheme === "level") {
+      colorScale = levelColorScale;
+      selectedProperty = selectedCountry.level_2;
     } // Add more conditions for other coloring schemes if needed
 
     return { colorScale, selectedProperty };

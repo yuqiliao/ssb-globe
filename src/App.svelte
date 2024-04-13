@@ -4,8 +4,14 @@
   import MapFilter from "./components/MapFilter.svelte";
   import MapDetails from "./components/MapDetails.svelte";
   import MapLegend from "./components/MapLegend.svelte";
-  import { tooltipData, selectedColoringScheme } from "./stores/ui.js";
+  import Tooltip from "./components/Tooltip.svelte";
+  import {
+    tooltipData,
+    legendTooltipData,
+    selectedColoringScheme,
+  } from "./stores/ui.js";
   import { csv, autoType, ascending } from "d3";
+  import LegendTooltip from "./components/LegendTooltip.svelte";
 
   // Subscribe to changes in selectedColoringSchemeStore and update selectedColoringScheme accordingly
 
@@ -39,6 +45,13 @@
       Rotating Globe Component
       <Globe />
       <MapLegend />
+      <LegendTooltip slot="legendtooltip">
+        {#if $legendTooltipData && $legendTooltipData.legend}
+          <div>
+            {$legendTooltipData.legend}
+          </div>
+        {/if}
+      </LegendTooltip>
     </div>
   </div>
 

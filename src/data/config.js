@@ -113,3 +113,15 @@ export const incomeGroups = [
     value: "N/C",
   },
 ];
+
+export const levelColors = ["#1B4FA9", "#B6D2FF", "#D2D2D2"];
+export const levelGroups = [
+  { label: "National jurisdiction", value: "National" },
+  { label: "Subnational jurisdiction", value: "Subnational" },
+  {
+    label: "No tax/data/selection",
+    description:
+      "No tax verified, no data, or jurisdiction not included in current selection.",
+    value: "none",
+  },
+];
