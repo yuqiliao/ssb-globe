@@ -597,9 +597,9 @@
 
     <!-- Highlight the country -->
     {#if $tooltipData}
-      {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
-        <!-- if $tooltipData is part of the taxedPoly Or part of the parcial circle - draw the boarder of the jurisidction -->
-        {#if taxedPoly.find((d) => d.country_code == $tooltipData.country_code) || $tooltipData.country_code == "VUT" || $tooltipData.country_code == "NCL"}
+      {#if taxedPoly.find((d) => d.country_code == $tooltipData.country_code) || $tooltipData.country_code == "VUT" || $tooltipData.country_code == "NCL"}
+        {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
+          <!-- if $tooltipData is part of the taxedPoly Or part of the parcial circle - draw the boarder of the jurisidction -->
           <path
             d={path(
               (tooltipPath =
@@ -609,12 +609,14 @@
                 ) || $tooltipData)
             )}
             fill="transparent"
-            stroke="white"
+            stroke="#525151"
             stroke-width="2"
             pointer-events="none"
             in:draw
           />
-        {:else if taxedCircle.find((d) => d.country_code == $tooltipData.country_code)}
+        {/key}
+      {:else if taxedCircle.find((d) => d.country_code == $tooltipData.country_code)}
+        {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
           <!-- if $tooltipData is part of the taxCircle - draw the boarder of the circles -->
           <circle
             class="cursor-pointer {$tooltipData.country_code}"
@@ -622,16 +624,13 @@
             cy={projection([$tooltipData.lon, $tooltipData.lat])[1]}
             r="3"
             fill="transparent"
-            stroke="white"
+            stroke="#525151"
             stroke-width="2"
             pointer-events="none"
             in:draw
           />
-        {/if}
-        <!-- if $tooltipData is part of the taxedCircle - draw the boarder of the circles
-        
-        if $tooltipData is part of the taxedCombined - draw the boarder of the half circle -->
-      {/key}
+        {/key}
+      {/if}
     {/if}
 
     <!-- Highlight the country when hover -->
