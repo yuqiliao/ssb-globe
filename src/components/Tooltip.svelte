@@ -1,25 +1,19 @@
 <script>
-  import { tooltipData, legendTooltipData } from "../stores/ui.js";
-  import { format } from "d3-format";
+  import { tooltipData2 } from "../stores/ui.js";
 
-  export let visible = true;
   let windowWidth;
-
-  const suffixFormat = (d) => format(".2~s")(d).replace(/G/, "B");
 
   let tooltipContent = null;
 
   $: {
-    if ($tooltipData) {
-      if ($tooltipData.jurisdiction) {
+    if ($tooltipData2) {
+      if ($tooltipData2.jurisdiction) {
         tooltipContent = {
-          title: $tooltipData.jurisdiction,
-          population: $tooltipData.population,
+          title: $tooltipData2.jurisdiction,
         };
-      } else if ($tooltipData.properties) {
+      } else if ($tooltipData2.properties) {
         tooltipContent = {
-          title: $tooltipData.properties.BRK_NAME,
-          population: $tooltipData.properties.POP_EST,
+          title: $tooltipData2.properties.BRK_NAME,
         };
       } else {
         tooltipContent = null;
@@ -32,50 +26,20 @@
 
 <svelte:window bind:innerWidth={windowWidth} />
 <div>
-  <!-- {#if tooltipContent}
-    <div>
-      <h2>{tooltipContent.title}</h2>
-      <h3>Population of {suffixFormat(tooltipContent.population)}</h3>
-    </div>
-  {/if} -->
-
-  {#if visible && $legendTooltipData && $legendTooltipData.pos && $legendTooltipData.pos.x}
-    {console.log("this should work")}
+  {#if tooltipContent}
     <div
       class="absolute bg-white/90 p-2 min-w-[100px] max-w-[200px] -translate-x-1/2 pointer-events-none rounded-lg shadow-2xl"
       style="
-      left: {$legendTooltipData.pos.x - 50 > 0
-        ? $legendTooltipData.pos.x + 100 < windowWidth
-          ? $legendTooltipData.pos.x
-          : $legendTooltipData.pos.x - 50
-        : $legendTooltipData.pos.x + 50}px; 
-      top:{$legendTooltipData.pos.y - 50 > 0
-        ? $legendTooltipData.pos.y - 50
-        : $legendTooltipData.pos.y}px;"
+      left: {$tooltipData2.mouseX - 100 > 0
+        ? $tooltipData2.mouseX + 100 < windowWidth
+          ? $tooltipData2.mouseX
+          : $tooltipData2.mouseX - 50
+        : $tooltipData2.mouseX + 50}px; 
+      top:{$tooltipData2.mouseY - 50 > 0
+        ? $tooltipData2.mouseY - 50
+        : $tooltipData2.mouseY}px;"
     >
-      <slot />
+      <h2>{tooltipContent.title}</h2>
     </div>
   {/if}
 </div>
-
-<style>
-  div {
-    position: absolute;
-    bottom: 30px;
-    right: 100px;
-    text-align: right;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    color: red;
-  }
-
-  h3 {
-    font-size: 1.15rem;
-    font-weight: 200;
-    color: purple;
-  }
-</style>

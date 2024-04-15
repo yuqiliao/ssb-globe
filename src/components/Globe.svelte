@@ -3,7 +3,11 @@
 
   import * as topojson from "topojson-client";
   import { json, csv, autoType, flatGroup, scaleOrdinal } from "d3";
-  import { tooltipData, selectedColoringScheme } from "../stores/ui.js";
+  import {
+    tooltipData,
+    tooltipData2,
+    selectedColoringScheme,
+  } from "../stores/ui.js";
 
   $: console.log($selectedColoringScheme);
   import {
@@ -27,6 +31,27 @@
       ...place,
     };
   };
+  const handleMouseout = () => {
+    tooltipData2.set(null);
+  };
+  //   const handleHover = (place) => {
+  //     $tooltipData2 = {
+  //       value: place.jurisdiction,
+  //       label: place.jurisdiction,
+  //       ...place,
+  //     };
+  //   };
+  //   const handleHover = (place) => {
+  //     return function handleMousemoveFn(e) {
+  //         const selectedCountryWithMousePos = {
+  //             ...place,
+  //             mouseX: e.clientX,
+  //             mouseY: e.clientY
+  //         };
+  //         // Update tooltipData with the selected country including mouse position
+  //         tooltipData.set(selectedCountryWithMousePos);
+  //     };
+  // };
 
   let countries = topojson.feature(world, world.objects.countries).features;
   $: console.log("tooltipData", $tooltipData);
@@ -296,6 +321,8 @@
   $: filters, updateFilteredData();
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="chart-container" bind:clientWidth={width}>
   <h1>SSB taxes around the world</h1>
   <!-- could implement another tooltip to SSB when hover -->
@@ -339,6 +366,28 @@
             return colorScale(selectedProperty);
           })()}
           stroke="none"
+          on:mouseover={(event) => {
+            const selectedCountry =
+              taxedPoly.find(
+                (d) => d.country_code == country.properties.WB_A3
+              ) || country;
+            console.log("selectedCountry:", selectedCountry);
+            // Define handleMousemoveFn directly YL: I tried to define this function in the script section but for some reason it's not working, so have to create a function on the fly here, which makes the code very ulgy
+            const handleMousemoveFn = (e) => {
+              const selectedCountryWithMousePos = {
+                ...selectedCountry,
+                mouseX: e.clientX,
+                mouseY: e.clientY,
+              };
+              // Update tooltipData with the selected country including mouse position
+              console.log("this is working yay!");
+              tooltipData2.set(selectedCountryWithMousePos);
+              console.log($tooltipData2);
+            };
+            // Invoke handleMousemoveFn with the mouse event
+            handleMousemoveFn(event);
+          }}
+          on:mouseout={handleMouseout}
           on:click={() => {
             const selectedCountry =
               taxedPoly.find(
@@ -356,6 +405,7 @@
             tooltipData.set(selectedCountry);
             handleClick(selectedCountry);
           }}
+          on:blur={handleMouseout}
         />
       {/if}
     {/each}
@@ -441,6 +491,21 @@
               tooltipData.set(place);
               handleClick(place);
             }}
+            on:mouseover={(event) => {
+              const selectedCountry = place;
+              const handleMousemoveFn = (e) => {
+                const selectedCountryWithMousePos = {
+                  ...selectedCountry,
+                  mouseX: e.clientX,
+                  mouseY: e.clientY,
+                };
+                tooltipData2.set(selectedCountryWithMousePos);
+                console.log($tooltipData2);
+              };
+              // Invoke handleMousemoveFn with the mouse event
+              handleMousemoveFn(event);
+            }}
+            on:mouseout={handleMouseout}
           />
         {/if}
       {/each}
@@ -533,13 +598,52 @@
     <!-- Highlight the country -->
     {#if $tooltipData}
       {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
+        <!-- if $tooltipData is part of the taxedPoly Or part of the parcial circle - draw the boarder of the jurisidction -->
+        {#if taxedPoly.find((d) => d.country_code == $tooltipData.country_code) || $tooltipData.country_code == "VUT" || $tooltipData.country_code == "NCL"}
+          <path
+            d={path(
+              (tooltipPath =
+                worldAreas.find(
+                  (country) =>
+                    country.properties.WB_A3 == $tooltipData.country_code
+                ) || $tooltipData)
+            )}
+            fill="transparent"
+            stroke="white"
+            stroke-width="2"
+            pointer-events="none"
+            in:draw
+          />
+        {:else if taxedCircle.find((d) => d.country_code == $tooltipData.country_code)}
+          <!-- if $tooltipData is part of the taxCircle - draw the boarder of the circles -->
+          <circle
+            class="cursor-pointer {$tooltipData.country_code}"
+            cx={projection([$tooltipData.lon, $tooltipData.lat])[0]}
+            cy={projection([$tooltipData.lon, $tooltipData.lat])[1]}
+            r="3"
+            fill="transparent"
+            stroke="white"
+            stroke-width="2"
+            pointer-events="none"
+            in:draw
+          />
+        {/if}
+        <!-- if $tooltipData is part of the taxedCircle - draw the boarder of the circles
+        
+        if $tooltipData is part of the taxedCombined - draw the boarder of the half circle -->
+      {/key}
+    {/if}
+
+    <!-- Highlight the country when hover -->
+    <!-- {#if $tooltipData2}
+      {#key () => $tooltipData2.unique_id || $tooltipData2.properties.WB_A3 || $tooltipData2.properties.ADM0_A3}
         <path
           d={path(
             (tooltipPath =
               worldAreas.find(
                 (country) =>
-                  country.properties.WB_A3 == $tooltipData.country_code
-              ) || $tooltipData)
+                  country.properties.WB_A3 == $tooltipData2.country_code
+              ) || $tooltipData2)
           )}
           fill="transparent"
           stroke="white"
@@ -548,7 +652,7 @@
           in:draw
         />
       {/key}
-    {/if}
+    {/if} -->
   </svg>
 
   <!-- <Legend {colorScale} data={$tooltipData} /> -->

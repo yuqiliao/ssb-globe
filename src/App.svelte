@@ -7,6 +7,7 @@
   import Tooltip from "./components/Tooltip.svelte";
   import {
     tooltipData,
+    tooltipData2,
     legendTooltipData,
     selectedColoringScheme,
   } from "./stores/ui.js";
@@ -37,7 +38,7 @@
   // Import any necessary Svelte components or data here
 </script>
 
-<div class="container mx-auto flex flex-row justify-center">
+<div class="px-8 mx-auto flex flex-row justify-center">
   <!-- Left side (rotating globe) -->
   <div class="w-1/2 p-4">
     <!-- Place your rotating globe component here -->
@@ -45,6 +46,9 @@
       Rotating Globe Component
       <Globe />
       <MapLegend />
+      {#if $tooltipData2}
+        <Tooltip />
+      {/if}
       <LegendTooltip slot="legendtooltip">
         {#if $legendTooltipData && $legendTooltipData.legend}
           <div>
