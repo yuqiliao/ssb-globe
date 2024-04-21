@@ -38,37 +38,39 @@
   // Import any necessary Svelte components or data here
 </script>
 
-<div class="px-8 mx-auto flex flex-row justify-center">
-  <!-- Left side (rotating globe) -->
-  <div class="w-1/2 p-4">
+<div
+  class="py-2 px-6 md:px-12 lg:px-24 xl:px-32 mx-auto flex flex-col sm:flex-row justify-center bg-red-400"
+>
+  <!-- Left/top side (rotating globe) -->
+  <div class="px-6 md:px-12 lg:px-24 xl:px-32 w-full sm:w-2/3 bg-yellow-400">
     <!-- Place your rotating globe component here -->
-    <div class="border border-gray-300 rounded-md h-96">
-      Rotating Globe Component
+    <div class="m-4">
       <Globe />
-      <MapLegend />
-      {#if $tooltipData2}
-        <Tooltip />
-      {/if}
-      <LegendTooltip slot="legendtooltip">
-        {#if $legendTooltipData && $legendTooltipData.legend}
-          <div>
-            {$legendTooltipData.legend}
-          </div>
-        {/if}
-      </LegendTooltip>
     </div>
+    <div class="m-4">
+      <MapLegend />
+    </div>
+    {#if $tooltipData2}
+      <Tooltip />
+    {/if}
+    <LegendTooltip slot="legendtooltip">
+      {#if $legendTooltipData && $legendTooltipData.legend}
+        <div>
+          {$legendTooltipData.legend}
+        </div>
+      {/if}
+    </LegendTooltip>
   </div>
 
-  <!-- Right side (panel) -->
-  <div class="w-1/2 p-4">
+  <!-- Right/bottom side (panel) -->
+  <div class="w-full sm:w-1/3 bg-green-400">
     <!-- Panel content -->
-    <div class="border border-gray-300 rounded-md p-4 h-96">
-      <h2 class="text-lg font-semibold mb-4">Jurisdiction Information</h2>
-
+    <div class="m-4 bg-orange-400">
+      <h2 class="text-lg font-semibold">Selected Jurisdiction</h2>
       <MapFilter data={taxData} bind:filters={$tooltipData} />
-      <div>
-        <MapDetails item={$tooltipData} />
-      </div>
+    </div>
+    <div class="m-4 bg-pink-400">
+      <MapDetails item={$tooltipData} />
     </div>
   </div>
 </div>

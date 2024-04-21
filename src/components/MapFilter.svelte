@@ -8,9 +8,9 @@
 </script>
 
 <!-- <strong class="font-robotoCondensed">to zoom in</strong> -->
-<div class="mt-2 whitespace-nowrap selector flex flex-row items-center">
+<div class="whitespace-nowrap selector flex flex-row items-center">
   <!-- <strong class="font-robotoCondensed">Select</strong> -->
-  <span class="inline-block w-full lg:w-60">
+  <span class="inline-block w-full">
     <Select
       class=""
       placeholder="Select Jurisdiction"
@@ -40,6 +40,6 @@
     --clearSelectHoverColor: #000;
     --clearSelectFoucsColor: #000;
     --padding: 10px;
-    --margin: 5px;
+    /* --margin: 5px; */
   }
 </style>
