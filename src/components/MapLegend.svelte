@@ -37,7 +37,7 @@
     >
       <option value="instrument">Instrument</option>
       <option value="region">Region</option>
-      <option value="income">Income</option>
+      <option value="income">Income Level</option>
       <option value="level">Level</option>
     </select>
   </div>
@@ -70,6 +70,13 @@
           <span class="pointer-events-none">{cat.label}</span>
         </div>
       {/each}
+      <div class="text-xs text-gray-800">
+        Based on <a
+          class="underline"
+          href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups"
+          target="”_blank”">World Bank region categorizations</a
+        >
+      </div>
     {/if}
 
     {#if $selectedColoringScheme === "income"}
@@ -82,6 +89,13 @@
           <span class="pointer-events-none">{cat.label}</span>
         </div>
       {/each}
+      <div class="text-xs text-gray-800">
+        Based on <a
+          class="underline"
+          href="https://datahelpdesk.worldbank.org/knowledgebase/articles/906519-world-bank-country-and-lending-groups"
+          target="”_blank”">World Bank Income Level categorizations</a
+        >
+      </div>
     {/if}
 
     {#if $selectedColoringScheme === "level"}
@@ -99,7 +113,7 @@
 </div>
 
 <style>
-.selector {
+  .selector {
     --border: none;
     --borderRadius: 5px;
     --itemFirstBorderRadius: 0px;

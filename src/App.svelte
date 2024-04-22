@@ -40,11 +40,18 @@
 
 <div
   class="py-2 px-6 md:px-12 lg:px-24 xl:px-32 mx-auto flex flex-col sm:flex-row justify-center bg-red-400"
+  on:click={(event) => {
+    // Check if the click target is not the Globe component
+    if (!event.target.closest(".globe-component")) {
+      // If not the Globe component, set tooltipData to null
+      tooltipData.set(null);
+    }
+  }}
 >
   <!-- Left/top side (rotating globe) -->
   <div class="px-6 md:px-12 lg:px-24 xl:px-32 w-full sm:w-2/3 bg-yellow-400">
     <!-- Place your rotating globe component here -->
-    <div class="m-4">
+    <div class="m-4 globe-component">
       <Globe />
     </div>
     <div class="m-4">
@@ -66,7 +73,9 @@
   <div class="w-full sm:w-1/3 bg-green-400">
     <!-- Panel content -->
     <div class="m-4 bg-orange-400">
-      <h2 class="text-lg font-semibold">Selected Jurisdiction</h2>
+      <h3 class="my-2 text-xl lg:text-2xl font-semibold text-center">
+        SSB tax by beverage type
+      </h3>
       <MapFilter data={taxData} bind:filters={$tooltipData} />
     </div>
     <div class="m-4 bg-pink-400">

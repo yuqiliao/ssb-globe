@@ -323,10 +323,19 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="chart-container" bind:clientWidth={width}>
-  <h1>SSB taxes around the world</h1>
+<div class="chart-container bg-blue-400" bind:clientWidth={width}>
+  <h1 class="my-2 text-xl sm:text-2xl font-semibold text-center">
+    SSB tax around the world
+  </h1>
   <!-- could implement another tooltip to SSB when hover -->
-  <h2>Explore which jurisdictions have an SSB tax implemented</h2>
+  <h2 class="my-2 text-sm sm:text-base font-normal text-justify">
+    Explore the jurisdictions which has implmented sugar-sweetened beverage
+    (SSB) tax, based on the <a
+      class="underline"
+      href="https://ssbtax.worldbank.org/"
+      target="”_blank”">Global SSB Tax Database</a
+    > from the World Bank.
+  </h2>
   <svg {width} {height} bind:this={globe} class:dragging>
     <!-- Glow -->
     <Glow />
@@ -681,22 +690,5 @@
   /* not recommended in general, but here we already have outline for jurisdictions */
   path:focus {
     outline: none;
-  }
-  h1,
-  h2 {
-    color: white;
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-bottom: 0.35rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-    font-weight: 200;
-    margin-bottom: 1rem;
   }
 </style>

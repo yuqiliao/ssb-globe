@@ -51,6 +51,8 @@
       },
     ];
 
+    console.log("item", item);
+
     if (item) {
       tooltipContent = item.jurisdiction
         ? { title: item.jurisdiction, population: item.population }
@@ -66,38 +68,44 @@
   }
 </script>
 
-{#if tooltipContent}
-  <div>
-    Selected Jurisdction: {tooltipContent.title}
-  </div>
-
-  <div>
-    {#if item?.jurisdiction}
-      This jurisdiction have ave an SSB tax implemented since {item.year_imp}.
-    {:else}
-      This jurisdiction does not have an SSB tax implemented
-    {/if}
-  </div>
-{/if}
+<div class="mb-4 text-sm lg:text-base">
+  {#if tooltipContent}
+    <div>
+      {#if item?.jurisdiction}
+        {tooltipContent.title} has an SSB tax implemented since {item.year_imp}.
+        Its SSB tax covers the following beverage types.
+      {:else}
+        {tooltipContent.title} does not have an SSB tax implemented
+      {/if}
+    </div>
+  {:else}
+    <div>
+      Select a jurisdiciton from the dropdown menu or the globe to learn more!
+    </div>
+  {/if}
+</div>
 
 <div class="flex flex-col">
   <div class="-m-1.5 overflow-x-auto">
-    <div class="p-1.5 min-w-full inline-block align-middle">
+    <div class="p-1.5 min-w-full">
       <div class="overflow-hidden">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
             {#each categories as { label, icon, value }}
               <tr>
                 <td
-                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-800 text-right"
+                  class="text-right align-middle px-2 py-2 w-1/3 text-sm lg:text-base font-medium text-gray-800 dark:text-gray-800"
                   >{label}</td
                 >
-                <td
-                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 text-center"
-                  ><img class="w-6 h-6" src={icon} alt={label} /></td
+                <td class="px-2 py-2 text-sm text-gray-800 dark:text-gray-200"
+                  ><img
+                    class="w-8 h-8 sm:w-10 sm:h-10 mt-1"
+                    src={icon}
+                    alt={label}
+                  /></td
                 >
                 <td
-                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200 text-center"
+                  class="px-2 py-2 text-sm text-gray-800 dark:text-gray-200 align-middle"
                   >{#if value === 1}<span>✔</span>{/if}</td
                 >
               </tr>
@@ -107,6 +115,14 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="mb-4 text-xs text-gray-800">
+  Source: <a
+    class="underline"
+    href="https://datacatalog.worldbank.org/search/dataset/0063310"
+    target="”_blank”">Global SSB Tax Database</a
+  >
 </div>
 
 <style>
