@@ -323,7 +323,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="chart-container bg-blue-400" bind:clientWidth={width}>
+<div class="chart-container" bind:clientWidth={width}>
   <h1 class="my-2 text-xl sm:text-2xl font-semibold text-center">
     SSB tax around the world
   </h1>
@@ -346,7 +346,7 @@
       r={width / 2}
       cx={width / 2}
       cy={height / 2}
-      fill="#f8f8f8"
+      fill="#EBEBEB"
       filter="url('#glow')"
       on:click={() => tooltipData.set(null)}
     />
@@ -460,7 +460,7 @@
     {/each}
 
     <!-- plot rotating center , for dev/testing-->
-    <g>
+    <!-- <g>
       <circle
         class="cursor-pointer"
         cx={projection(rotatingGlobeCenter)[0]}
@@ -468,7 +468,7 @@
         r="10"
         fill="yellow"
       />
-    </g>
+    </g> -->
 
     <!-- small countries and non-country jurisdictions -->
     <g>
@@ -618,7 +618,7 @@
                 ) || $tooltipData)
             )}
             fill="transparent"
-            stroke="#525151"
+            stroke="white"
             stroke-width="2"
             pointer-events="none"
             in:draw
@@ -633,7 +633,7 @@
             cy={projection([$tooltipData.lon, $tooltipData.lat])[1]}
             r="3"
             fill="transparent"
-            stroke="#525151"
+            stroke="white"
             stroke-width="2"
             pointer-events="none"
             in:draw
@@ -668,7 +668,7 @@
 
 <style>
   .chart-container {
-    max-width: 468px;
+    max-width: 486px;
     margin: 0 auto;
   }
 

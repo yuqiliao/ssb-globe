@@ -29,7 +29,7 @@
   const hideTooltip = () => legendTooltipData.set(null);
 </script>
 
-<div class="bg-purple-400">
+<div class="">
   <div class="mb-2 text-base lg:text-lg">
     Jurisdictions colored by <select
       bind:value={$selectedColoringScheme}

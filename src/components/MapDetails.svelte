@@ -79,7 +79,7 @@
       {/if}
     </div>
   {:else}
-    <div>
+    <div class="animate-slidein300">
       Select a jurisdiciton from the dropdown menu or the globe to learn more!
     </div>
   {/if}
@@ -115,14 +115,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="mb-4 text-xs text-gray-800">
-  Source: <a
-    class="underline"
-    href="https://datacatalog.worldbank.org/search/dataset/0063310"
-    target="”_blank”">Global SSB Tax Database</a
-  >
 </div>
 
 <style>
