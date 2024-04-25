@@ -22,7 +22,7 @@ const config = {
     },
   },
 
-  plugins: [],
+  plugins: [require("tailwindcss-animated")],
 };
 
 module.exports = config;

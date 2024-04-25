@@ -1,7 +1,5 @@
 <script>
-  import { timeFormat } from "d3";
   export let item;
-  const formatDate = timeFormat("%Y-%m-%d");
 
   import carbonatesIcon from "$images/Carbonates.svg";
   import concentratesIcon from "$images/ConcentratesAndSyrups.svg";
@@ -11,7 +9,6 @@
   import sweetenedIcon from "$images/SweetenedJuices.svg";
   import unsweetenedIcon from "$images/UnsweetenedJuices.svg";
 
-  let selectedContent = null;
   let tooltipContent = null;
 
   let categories = [];
@@ -51,7 +48,7 @@
       },
     ];
 
-    console.log("item", item);
+    // console.log("item", item);
 
     if (item) {
       tooltipContent = item.jurisdiction
@@ -72,14 +69,17 @@
   {#if tooltipContent}
     <div>
       {#if item?.jurisdiction}
-        {tooltipContent.title} has an SSB tax implemented since {item.year_imp}.
+        <strong class="font-bold">{tooltipContent.title}</strong> has an SSB tax
+        implemented <strong class="font-bold">since {item.year_imp}</strong>.
         Its SSB tax covers the following beverage types.
       {:else}
         {tooltipContent.title} does not have an SSB tax implemented
       {/if}
     </div>
   {:else}
-    <div class="animate-slidein300">
+    <div
+      class="animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out"
+    >
       Select a jurisdiciton from the dropdown menu or the globe to learn more!
     </div>
   {/if}

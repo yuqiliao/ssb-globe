@@ -29,6 +29,7 @@
     "d3-selection": "^3.0.0",
     "path": "^0.12.7",
     "svelte-select": "^5.8.3",
+    "tailwindcss-animated": "^1.0.1",
     "topojson-client": "^3.1.0"
   }
 }

@@ -4,7 +4,7 @@
   export let data;
   export let filters;
 
-  $: console.log(filters);
+  // $: console.log(filters);
 </script>
 
 <!-- <strong class="font-robotoCondensed">to zoom in</strong> -->
@@ -30,7 +30,7 @@
     --listBorderRadius: 0px;
     --itemHoverBG: #ccc;
     --borderFocusColor: #000;
-    --background: rgb(234, 234, 234);
+    --background: rgb(209 213 219);
     --inputFontSize: 1em;
     --inputColor: #000;
     --placeholderColor: #000;

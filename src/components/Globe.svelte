@@ -1,4 +1,6 @@
 <script>
+  import { geoOrthographic, geoPath, geoCentroid, geoDistance } from "d3-geo";
+  import Glow from "./Glow.svelte";
   import world from "$data/world-110m.json";
 
   import * as topojson from "topojson-client";
@@ -9,7 +11,7 @@
     selectedColoringScheme,
   } from "../stores/ui.js";
 
-  $: console.log($selectedColoringScheme);
+  // $: console.log($selectedColoringScheme);
   import {
     instrumentColors,
     instrumentGroups,
@@ -54,7 +56,7 @@
   // };
 
   let countries = topojson.feature(world, world.objects.countries).features;
-  $: console.log("tooltipData", $tooltipData);
+  // $: console.log("tooltipData", $tooltipData);
 
   const geojsonPath = "src/data/natural_earth.json";
   const boundaries = "src/data/InternationalBoundariesDisputedBoundaries.json";
@@ -97,7 +99,7 @@
           ? "National"
           : "Subnational",
     }));
-    console.log(taxData);
+    // console.log(taxData);
   });
 
   $: taxedPoly = taxData.filter(
@@ -113,7 +115,7 @@
       d.country_code !== "VUT" &&
       d.country_code !== "NCL"
   );
-  $: console.log(taxedCircle);
+  // $: console.log(taxedCircle);
 
   $: taxedCombined = flatGroup(
     taxData.filter((d) => d.country_code == "VUT" || d.country_code == "NCL"),
@@ -131,9 +133,6 @@
   }
 
   let strokeWidth = 0.5;
-
-  import { geoOrthographic, geoPath, geoCentroid, geoDistance } from "d3-geo";
-  import Glow from "./Glow.svelte";
 
   let width = 400;
   $: height = width; // Because it is a circle, and we want it to update anytime width changes
@@ -250,8 +249,6 @@
     );
   });
 
-  import Legend from "./Legend.svelte";
-
   // export let tooltipData;
   let tooltipPath;
 
@@ -323,19 +320,22 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="chart-container" bind:clientWidth={width}>
-  <h1 class="my-2 text-xl sm:text-2xl font-semibold text-center">
-    SSB tax around the world
-  </h1>
-  <!-- could implement another tooltip to SSB when hover -->
-  <h2 class="my-2 text-sm sm:text-base font-normal text-justify">
-    Explore the jurisdictions which has implmented sugar-sweetened beverage
-    (SSB) tax, based on the <a
-      class="underline"
-      href="https://ssbtax.worldbank.org/"
-      target="”_blank”">Global SSB Tax Database</a
-    > from the World Bank.
-  </h2>
+  <div class="px-4 pb-4">
+    <h1 class="my-2 text-xl sm:text-2xl font-semibold text-center">
+      SSB tax around the world
+    </h1>
+    <!-- could implement another tooltip to SSB when hover -->
+    <h2 class="my-2 text-sm sm:text-base font-normal text-justify">
+      Explore the jurisdictions which has implmented sugar-sweetened beverage
+      (SSB) tax, based on the <a
+        class="underline"
+        href="https://ssbtax.worldbank.org/"
+        target="”_blank”">Global SSB Tax Database</a
+      > from the World Bank.
+    </h2>
+  </div>
   <svg {width} {height} bind:this={globe} class:dragging>
     <!-- Glow -->
     <Glow />
@@ -346,7 +346,7 @@
       r={width / 2}
       cx={width / 2}
       cy={height / 2}
-      fill="#EBEBEB"
+      fill="#f9fafb"
       filter="url('#glow')"
       on:click={() => tooltipData.set(null)}
     />
@@ -355,7 +355,7 @@
     {#each worldAreas as country}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- base gray map for all jurisdictions  -->
-      <path fill="#D2D2D2" stroke="none" d={path(country)} />
+      <path fill="#d1d5db" stroke="none" d={path(country)} />
       <!-- color the jurisdictions with ssb taxes -->
       {#if taxedPoly.find((d) => d.country_code == country.properties.WB_A3)}
         <path
@@ -380,7 +380,7 @@
               taxedPoly.find(
                 (d) => d.country_code == country.properties.WB_A3
               ) || country;
-            console.log("selectedCountry:", selectedCountry);
+            // console.log("selectedCountry:", selectedCountry);
             // Define handleMousemoveFn directly YL: I tried to define this function in the script section but for some reason it's not working, so have to create a function on the fly here, which makes the code very ulgy
             const handleMousemoveFn = (e) => {
               const selectedCountryWithMousePos = {
@@ -389,9 +389,9 @@
                 mouseY: e.clientY,
               };
               // Update tooltipData with the selected country including mouse position
-              console.log("this is working yay!");
+              // console.log("this is working yay!");
               tooltipData2.set(selectedCountryWithMousePos);
-              console.log($tooltipData2);
+              // console.log($tooltipData2);
             };
             // Invoke handleMousemoveFn with the mouse event
             handleMousemoveFn(event);
@@ -402,7 +402,7 @@
               taxedPoly.find(
                 (d) => d.country_code == country.properties.WB_A3
               ) || country;
-            console.log("selectedCountry:", selectedCountry);
+            // console.log("selectedCountry:", selectedCountry);
             tooltipData.set(selectedCountry);
             handleClick(selectedCountry);
           }}
@@ -414,7 +414,6 @@
             tooltipData.set(selectedCountry);
             handleClick(selectedCountry);
           }}
-          on:blur={handleMouseout}
         />
       {/if}
     {/each}
@@ -509,7 +508,7 @@
                   mouseY: e.clientY,
                 };
                 tooltipData2.set(selectedCountryWithMousePos);
-                console.log($tooltipData2);
+                // console.log($tooltipData2);
               };
               // Invoke handleMousemoveFn with the mouse event
               handleMousemoveFn(event);
@@ -618,7 +617,7 @@
                 ) || $tooltipData)
             )}
             fill="transparent"
-            stroke="white"
+            stroke="#fafafa"
             stroke-width="2"
             pointer-events="none"
             in:draw
@@ -633,7 +632,7 @@
             cy={projection([$tooltipData.lon, $tooltipData.lat])[1]}
             r="3"
             fill="transparent"
-            stroke="white"
+            stroke="#fafafa"
             stroke-width="2"
             pointer-events="none"
             in:draw
@@ -662,8 +661,6 @@
       {/key}
     {/if} -->
   </svg>
-
-  <!-- <Legend {colorScale} data={$tooltipData} /> -->
 </div>
 
 <style>

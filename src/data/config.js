@@ -114,7 +114,7 @@ export const incomeGroups = [
   },
 ];
 
-export const levelColors = ["#1B4FA9", "#B6D2FF", "#D2D2D2"];
+export const levelColors = ["#c87db6", "#0b73ae", "#D2D2D2"];
 export const levelGroups = [
   { label: "National jurisdiction", value: "National" },
   { label: "Subnational jurisdiction", value: "Subnational" },

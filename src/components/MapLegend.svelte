@@ -12,8 +12,8 @@
     levelGroups,
   } from "$data/config.js";
 
-  $: console.log($selectedColoringScheme);
-  $: console.log("legendTooltipData", $legendTooltipData);
+  // $: console.log($selectedColoringScheme);
+  // $: console.log("legendTooltipData", $legendTooltipData);
 
   const showTooltip = (cat) => {
     return function handleMousemoveFn(e) {
@@ -29,11 +29,13 @@
   const hideTooltip = () => legendTooltipData.set(null);
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="">
   <div class="mb-2 text-base lg:text-lg">
     Jurisdictions colored by <select
       bind:value={$selectedColoringScheme}
-      class="rounded-md px-2 py-1 bg-gray-200"
+      class="rounded-md px-2 py-1 bg-gray-300"
     >
       <option value="instrument">Instrument</option>
       <option value="region">Region</option>
@@ -49,7 +51,6 @@
           on:mouseover={showTooltip(cat)}
           on:focus={showTooltip(cat)}
           on:mouseout={hideTooltip}
-          on:blur={hideTooltip}
         >
           <span
             class="inline-block w-5 h-5 mr-1"

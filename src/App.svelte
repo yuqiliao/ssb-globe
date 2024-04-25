@@ -5,6 +5,8 @@
   import MapDetails from "./components/MapDetails.svelte";
   import MapLegend from "./components/MapLegend.svelte";
   import Tooltip from "./components/Tooltip.svelte";
+  import LegendTooltip from "./components/LegendTooltip.svelte";
+
   import {
     tooltipData,
     tooltipData2,
@@ -12,11 +14,10 @@
     selectedColoringScheme,
   } from "./stores/ui.js";
   import { csv, autoType, ascending } from "d3";
-  import LegendTooltip from "./components/LegendTooltip.svelte";
 
   // Subscribe to changes in selectedColoringSchemeStore and update selectedColoringScheme accordingly
 
-  $: console.log($selectedColoringScheme);
+  // $: console.log($selectedColoringScheme);
 
   let databasePath = "src/data/database.csv";
   let taxData = [];
@@ -28,21 +29,27 @@
         label: d.jurisdiction,
       }))
       .sort((a, b) => ascending(a.value, b.value));
-    console.log(taxData);
+    // console.log(taxData);
   });
 
   let selectedJurisdiction;
-  $: console.log(selectedJurisdiction);
+  // $: console.log(selectedJurisdiction);
 
-  $: console.log($tooltipData);
+  // $: console.log($tooltipData);
   // Import any necessary Svelte components or data here
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- add an on:click event to set tooltipData as null (except for when the Globe area is clicked) -->
 <div
-  class="py-4 px-6 md:px-12 lg:px-24 xl:px-32 mx-auto flex flex-col sm:flex-row justify-center"
+  class="py-4 mr-6 md:mr-12 lg:mr-24 xl:mr-32 px-6 md:px-12 lg:px-24 xl:px-32 mx-auto flex flex-col sm:flex-row justify-center"
   on:click={(event) => {
     // Check if the click target is not the Globe component
-    if (!event.target.closest(".globe-component")) {
+    if (
+      !event.target.closest(".globe-component") &&
+      !event.target.closest(".right-panel")
+    ) {
       // If not the Globe component, set tooltipData to null
       tooltipData.set(null);
     }
@@ -54,7 +61,7 @@
     <div class="m-4 globe-component">
       <Globe />
     </div>
-    <div class="m-4">
+    <div class="m-4 p-4 rounded-md bg-gray-100">
       <MapLegend />
     </div>
     {#if $tooltipData2}
@@ -70,7 +77,7 @@
   </div>
 
   <!-- Right/bottom side (panel) -->
-  <div class="w-full sm:w-1/3">
+  <div class="mb-4 w-full sm:w-1/3 rounded-md bg-gray-100 right-panel">
     <!-- Panel content -->
     <div class="m-4">
       <h3 class="my-2 text-xl lg:text-2xl font-semibold text-center">
@@ -81,7 +88,7 @@
     <div class="py-2 m-4">
       <MapDetails item={$tooltipData} />
     </div>
-    <div class="mb-4 mx-4 text-xs text-gray-800">
+    <div class="mt-4 mx-4 text-xs text-gray-800">
       <div>
         Source: <a
           class="underline"
