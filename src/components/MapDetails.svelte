@@ -71,16 +71,18 @@
       {#if item?.jurisdiction}
         <strong class="font-bold">{tooltipContent.title}</strong> has an SSB tax
         implemented <strong class="font-bold">since {item.year_imp}</strong>.
-        Its SSB tax covers the following beverage types.
+        Its SSB tax covers the following
+        <span class="underline">beverage types</span>.
       {:else}
         {tooltipContent.title} does not have an SSB tax implemented
       {/if}
     </div>
   {:else}
     <div
-      class="animate-pulse animate-infinite animate-duration-[2000ms] animate-ease-in-out"
+      class="animate-bounce animate-twice animate-duration-[2000ms] animate-ease-in-out"
     >
-      Select a jurisdiciton from the dropdown menu or the globe to learn more!
+      Select a jurisdiction from the dropdown menu or from the globe to learn
+      more!
     </div>
   {/if}
 </div>

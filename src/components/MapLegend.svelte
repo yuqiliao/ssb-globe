@@ -32,7 +32,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="">
-  <div class="mb-2 text-base lg:text-lg">
+  <div class="mb-2 text-base font-semibold lg:text-lg">
     Jurisdictions colored by <select
       bind:value={$selectedColoringScheme}
       class="rounded-md px-2 py-1 bg-gray-300"

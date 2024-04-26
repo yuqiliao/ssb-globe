@@ -323,7 +323,9 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="chart-container" bind:clientWidth={width}>
   <div class="px-4 pb-4">
-    <h1 class="my-2 text-xl sm:text-2xl font-semibold text-center">
+    <h1
+      class="my-2 text-xl sm:text-[2rem] font-bold text-center text-gray-900 transition duration-1000 loop-animation"
+    >
       SSB tax around the world
     </h1>
     <!-- could implement another tooltip to SSB when hover -->
@@ -687,5 +689,28 @@
   /* not recommended in general, but here we already have outline for jurisdictions */
   path:focus {
     outline: none;
+  }
+
+  @keyframes colorChange {
+    0% {
+      color: #0b73ae;
+    } /* Starting color */
+    25% {
+      color: #87cadd;
+    } /* Midway color */
+    50% {
+      color: #7fc07e;
+    } /* Ending color */
+
+    75% {
+      color: #fbb158;
+    } /* Starting color */
+    100% {
+      color: #c87db6;
+    } /* Midway color */
+  }
+
+  .loop-animation {
+    animation: colorChange 15s infinite; /* Adjust duration and timing as needed */
   }
 </style>

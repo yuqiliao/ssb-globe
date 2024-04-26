@@ -81,7 +81,7 @@
     <!-- Panel content -->
     <div class="m-4">
       <h3 class="my-2 text-xl lg:text-2xl font-semibold text-center">
-        SSB tax by beverage type
+        SSB tax coverage
       </h3>
       <MapFilter data={taxData} bind:filters={$tooltipData} />
     </div>
