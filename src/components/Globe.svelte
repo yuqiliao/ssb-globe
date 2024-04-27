@@ -58,10 +58,9 @@
   let countries = topojson.feature(world, world.objects.countries).features;
   // $: console.log("tooltipData", $tooltipData);
 
-  const geojsonPath = "src/static/data/natural_earth.json";
-  const boundaries =
-    "src/static/data/InternationalBoundariesDisputedBoundaries.json";
-  const dispArea = "src/static/data/area.json";
+  const geojsonPath = "src/data/natural_earth.json";
+  const boundaries = "src/data/InternationalBoundariesDisputedBoundaries.json";
+  const dispArea = "src/data/area.json";
 
   let worldAreas = [];
   let worldBoundries = [];
@@ -81,7 +80,7 @@
   // $: console.log(worldBoundries);
   // $: console.log(wbDisputedArea);
 
-  let databasePath = "src/static/data/database.csv";
+  let databasePath = "src/data/database.csv";
 
   //note that here taxData is asynchronously loaded and initialized with data fetched from a CSV file, exporting it directly won't be possible because the data might not be available immediately when other components try to import it.
   // YL: added `|| d.level == "National "` because Russia's level column has an extra space
