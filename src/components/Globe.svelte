@@ -19,7 +19,7 @@
     incomeGroups,
     levelColors,
     levelGroups,
-  } from "$data/config.js";
+  } from "/public/config.js";
 
   // export let selectedJurisdiction;
   let activeId;
@@ -55,9 +55,9 @@
 
   // $: console.log("tooltipData", $tooltipData);
 
-  const geojsonPath = "/data/natural_earth.json";
-  const boundaries = "/data/InternationalBoundariesDisputedBoundaries.json";
-  const dispArea = "/data/area.json";
+  const geojsonPath = "natural_earth.json";
+  const boundaries = "InternationalBoundariesDisputedBoundaries.json";
+  const dispArea = "area.json";
 
   let worldAreas = [];
   let worldBoundries = [];
@@ -77,7 +77,7 @@
   // $: console.log(worldBoundries);
   // $: console.log(wbDisputedArea);
 
-  let databasePath = "/data/database.csv";
+  let databasePath = "database.csv";
 
   //note that here taxData is asynchronously loaded and initialized with data fetched from a CSV file, exporting it directly won't be possible because the data might not be available immediately when other components try to import it.
   // YL: added `|| d.level == "National "` because Russia's level column has an extra space

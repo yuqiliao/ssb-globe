@@ -10,7 +10,7 @@
     incomeGroups,
     levelColors,
     levelGroups,
-  } from "$data/config.js";
+  } from "/public/config.js";
 
   // $: console.log($selectedColoringScheme);
   // $: console.log("legendTooltipData", $legendTooltipData);
