@@ -1,9 +1,7 @@
 <script>
   import { geoOrthographic, geoPath, geoCentroid, geoDistance } from "d3-geo";
   import Glow from "./Glow.svelte";
-  import world from "$data/world-110m.json";
 
-  import * as topojson from "topojson-client";
   import { json, csv, autoType, flatGroup, scaleOrdinal } from "d3";
   import {
     tooltipData,
@@ -55,12 +53,11 @@
   //     };
   // };
 
-  let countries = topojson.feature(world, world.objects.countries).features;
   // $: console.log("tooltipData", $tooltipData);
 
-  const geojsonPath = "src/data/natural_earth.json";
-  const boundaries = "src/data/InternationalBoundariesDisputedBoundaries.json";
-  const dispArea = "src/data/area.json";
+  const geojsonPath = "/data/natural_earth.json";
+  const boundaries = "/data/InternationalBoundariesDisputedBoundaries.json";
+  const dispArea = "/data/area.json";
 
   let worldAreas = [];
   let worldBoundries = [];
@@ -80,7 +77,7 @@
   // $: console.log(worldBoundries);
   // $: console.log(wbDisputedArea);
 
-  let databasePath = "src/data/database.csv";
+  let databasePath = "/data/database.csv";
 
   //note that here taxData is asynchronously loaded and initialized with data fetched from a CSV file, exporting it directly won't be possible because the data might not be available immediately when other components try to import it.
   // YL: added `|| d.level == "National "` because Russia's level column has an extra space
