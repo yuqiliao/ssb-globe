@@ -1,15 +1,12 @@
 <script>
   import { geoOrthographic, geoPath, geoCentroid, geoDistance } from "d3-geo";
   import Glow from "./Glow.svelte";
-
   import { json, csv, autoType, flatGroup, scaleOrdinal } from "d3";
   import {
     tooltipData,
     tooltipData2,
     selectedColoringScheme,
   } from "../stores/ui.js";
-
-  // $: console.log($selectedColoringScheme);
   import {
     instrumentColors,
     instrumentGroups,
@@ -21,9 +18,6 @@
     levelGroups,
   } from "/public/config.js";
 
-  // export let selectedJurisdiction;
-  let activeId;
-
   const handleClick = (place) => {
     $tooltipData = {
       value: place.jurisdiction,
@@ -34,26 +28,6 @@
   const handleMouseout = () => {
     tooltipData2.set(null);
   };
-  //   const handleHover = (place) => {
-  //     $tooltipData2 = {
-  //       value: place.jurisdiction,
-  //       label: place.jurisdiction,
-  //       ...place,
-  //     };
-  //   };
-  //   const handleHover = (place) => {
-  //     return function handleMousemoveFn(e) {
-  //         const selectedCountryWithMousePos = {
-  //             ...place,
-  //             mouseX: e.clientX,
-  //             mouseY: e.clientY
-  //         };
-  //         // Update tooltipData with the selected country including mouse position
-  //         tooltipData.set(selectedCountryWithMousePos);
-  //     };
-  // };
-
-  // $: console.log("tooltipData", $tooltipData);
 
   const geojsonPath = "natural_earth.json";
   const boundaries = "InternationalBoundariesDisputedBoundaries.json";
@@ -144,10 +118,6 @@
   // $: console.log(path(borders));
 
   let radius = 3;
-
-  // Color scale
-  import { max } from "d3-array";
-  import { scaleLinear } from "d3-scale";
 
   // Function to color jurisdicitons
   // Define color scales based on different coloring schemes
@@ -249,7 +219,6 @@
   // export let tooltipData;
   let tooltipPath;
 
-  // $: console.log($tooltipData);
   // Whenever tooltipData changes, calculate the center of the country and rotate to it
   $: if ($tooltipData) {
     tooltipPath =
@@ -401,7 +370,7 @@
               taxedPoly.find(
                 (d) => d.country_code == country.properties.WB_A3
               ) || country;
-            // console.log("selectedCountry:", selectedCountry);
+            console.log("selectedCountry:", selectedCountry);
             tooltipData.set(selectedCountry);
             handleClick(selectedCountry);
           }}
@@ -457,7 +426,7 @@
       {/if}
     {/each}
 
-    <!-- plot rotating center , for dev/testing-->
+    <!-- plot rotating center , for dev/testing, comment out when build-->
     <!-- <g>
       <circle
         class="cursor-pointer"
@@ -602,7 +571,8 @@
       {/each}
     </g>
 
-    <!-- Highlight the country -->
+    <!-- Highlight the country; draw animation! -->
+
     {#if $tooltipData}
       {#if taxedPoly.find((d) => d.country_code == $tooltipData.country_code) || $tooltipData.country_code == "VUT" || $tooltipData.country_code == "NCL"}
         {#key () => $tooltipData.unique_id || $tooltipData.properties.WB_A3 || $tooltipData.properties.ADM0_A3}
@@ -616,7 +586,7 @@
                 ) || $tooltipData)
             )}
             fill="transparent"
-            stroke="#fafafa"
+            stroke="#1f2937"
             stroke-width="2"
             pointer-events="none"
             in:draw
@@ -631,7 +601,7 @@
             cy={projection([$tooltipData.lon, $tooltipData.lat])[1]}
             r="3"
             fill="transparent"
-            stroke="#fafafa"
+            stroke="#f9fafb"
             stroke-width="2"
             pointer-events="none"
             in:draw

@@ -1,23 +1,13 @@
 <script>
   import Globe from "./components/Globe.svelte";
-  //   import Tooltip from "./components/Tooltip.svelte";
   import MapFilter from "./components/MapFilter.svelte";
   import MapDetails from "./components/MapDetails.svelte";
   import MapLegend from "./components/MapLegend.svelte";
-  import Tooltip from "./components/Tooltip.svelte";
+  import JurisdictionTooltip from "./components/JurisdictionTooltip.svelte";
   import LegendTooltip from "./components/LegendTooltip.svelte";
 
-  import {
-    tooltipData,
-    tooltipData2,
-    legendTooltipData,
-    selectedColoringScheme,
-  } from "./stores/ui.js";
+  import { tooltipData, tooltipData2, legendTooltipData } from "./stores/ui.js";
   import { csv, autoType, ascending } from "d3";
-
-  // Subscribe to changes in selectedColoringSchemeStore and update selectedColoringScheme accordingly
-
-  // $: console.log($selectedColoringScheme);
 
   let databasePath = "database.csv";
   let taxData = [];
@@ -29,14 +19,8 @@
         label: d.jurisdiction,
       }))
       .sort((a, b) => ascending(a.value, b.value));
-    console.log(taxData);
+    // console.log(taxData);
   });
-
-  let selectedJurisdiction;
-  // $: console.log(selectedJurisdiction);
-
-  // $: console.log($tooltipData);
-  // Import any necessary Svelte components or data here
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -65,7 +49,7 @@
       <MapLegend />
     </div>
     {#if $tooltipData2}
-      <Tooltip />
+      <JurisdictionTooltip />
     {/if}
     <LegendTooltip slot="legendtooltip">
       {#if $legendTooltipData && $legendTooltipData.legend}

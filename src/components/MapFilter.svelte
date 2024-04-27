@@ -1,6 +1,5 @@
 <script>
   import Select from "svelte-select";
-  import { ascending } from "d3";
   export let data;
   export let filters;
 
