@@ -290,7 +290,7 @@
 <div class="chart-container" bind:clientWidth={width}>
   <div class="px-4 pb-4">
     <h1
-      class="my-2 text-xl sm:text-[2rem] font-bold text-center text-gray-900 transition duration-1000 loop-animation"
+      class="my-2 text-2xl sm:text-[2rem] font-bold text-center text-gray-900 transition duration-1000 loop-animation"
     >
       SSB tax around the world
     </h1>
