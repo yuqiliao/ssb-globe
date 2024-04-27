@@ -671,10 +671,6 @@
     margin: 0 auto;
   }
 
-  body {
-    background: rgb(40, 40, 40);
-  }
-
   svg {
     overflow: visible;
   }

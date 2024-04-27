@@ -29,7 +29,7 @@
         label: d.jurisdiction,
       }))
       .sort((a, b) => ascending(a.value, b.value));
-    // console.log(taxData);
+    console.log(taxData);
   });
 
   let selectedJurisdiction;

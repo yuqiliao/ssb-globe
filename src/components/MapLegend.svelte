@@ -112,25 +112,3 @@
     {/if}
   </div>
 </div>
-
-<style>
-  .selector {
-    --border: none;
-    --borderRadius: 5px;
-    --itemFirstBorderRadius: 0px;
-    --listBorderRadius: 0px;
-    --itemHoverBG: #ccc;
-    --borderFocusColor: #000;
-    --background: rgb(234, 234, 234);
-    --inputFontSize: 1em;
-    --inputColor: #000;
-    --placeholderColor: #000;
-    --indicatorTop: 5px;
-    --indicatorColor: #000;
-    --clearSelectColor: #000;
-    --clearSelectHoverColor: #000;
-    --clearSelectFoucsColor: #000;
-    --padding: 10px;
-    --margin: 5px;
-  }
-</style>
