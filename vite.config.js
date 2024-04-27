@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       $components: path.resolve("./src/components"),
-      $data: path.resolve("./src/data"),
+      $data: path.resolve("./src/static/data"),
       $images: path.resolve("./src/images"),
     },
   },

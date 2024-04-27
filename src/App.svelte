@@ -19,7 +19,7 @@
 
   // $: console.log($selectedColoringScheme);
 
-  let databasePath = "src/data/database.csv";
+  let databasePath = "src/static/data/database.csv";
   let taxData = [];
   csv(databasePath, autoType).then((data) => {
     taxData = data
