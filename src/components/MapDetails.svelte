@@ -78,11 +78,16 @@
       {/if}
     </div>
   {:else}
-    <div
-      class="animate-bounce animate-twice animate-duration-[2000ms] animate-ease-in-out"
-    >
-      Select a jurisdiction from the dropdown menu or from the globe to learn
-      more!
+    <div>
+      <div
+        class="inline-block animate-wiggle-more animate-infinite animate-duration-1000 animate-ease-in-out"
+      >
+        👉
+      </div>
+      <span>
+        Select a jurisdiction from the dropdown menu or from the globe to learn
+        more!</span
+      >
     </div>
   {/if}
 </div>
